@@ -3,19 +3,41 @@ import React, { Component } from 'react'
 export default class PostForm extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      title: '',
+    }
   }
   submitHandler = (event) => {
-    event.preventHadler()
+    event.preventDefault()
+    const { title } = this.state
+    const newPost = {
+      title,
+      id: Date.now().toString(),
+    }
+
+    console.log(newPost)
+  }
+
+  changeInputHandler = (event) => {
+    event.persist()
+    this.setState((prev) => ({ ...prev, ...{ [event.target.name]: event.target.value } }))
+    console.log(this.state.title)
   }
   render() {
     return (
       <form onSubmit={this.submitHandler}>
         <div className='mb-3'>
-          <label for='title' className='form-label'>
+          <label htmlFor='title' className='form-label'>
             Форма поста
           </label>
-          <input type='text' class='form-control' id='title' />
+          <input
+            value={this.state.title}
+            onChange={this.changeInputHandler}
+            type='text'
+            className='form-control'
+            id='title'
+            name='title'
+          />
         </div>
         <button type='submit' className='btn btn-success'>
           Создать пост
