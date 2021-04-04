@@ -12,11 +12,14 @@ class PostForm extends Component {
   submitHandler = (event) => {
     event.preventDefault()
     const { title } = this.state
+    if (!title.trim()) {
+      return
+    }
     const newPost = {
       title,
       id: Date.now().toString(),
     }
-
+    this.setState({ title: '' })
     console.log(newPost)
     this.props.createPost(newPost)
   }
