@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { createPost } from '../redux/actions'
 
-export default class PostForm extends Component {
+class PostForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -16,6 +18,7 @@ export default class PostForm extends Component {
     }
 
     console.log(newPost)
+    this.props.createPost(newPost)
   }
 
   changeInputHandler = (event) => {
@@ -46,3 +49,9 @@ export default class PostForm extends Component {
     )
   }
 }
+
+const mapDispatchToProps = {
+  createPost,
+}
+
+export default connect(null, mapDispatchToProps)(PostForm)
