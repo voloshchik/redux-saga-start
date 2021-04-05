@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { createPost } from '../redux/actions'
+import { createPost, hideAlert, showAlert } from '../redux/actions'
+import Alert from './Alert'
 
 class PostForm extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class PostForm extends Component {
     event.preventDefault()
     const { title } = this.state
     if (!title.trim()) {
+      this.props.showAlert('Введите текст')
       return
     }
     const newPost = {
@@ -32,6 +34,7 @@ class PostForm extends Component {
   render() {
     return (
       <form onSubmit={this.submitHandler}>
+        {this.props.message && <Alert message={this.props.message} />}
         <div className='mb-3'>
           <label htmlFor='title' className='form-label'>
             Форма поста
@@ -55,6 +58,14 @@ class PostForm extends Component {
 
 const mapDispatchToProps = {
   createPost,
+  showAlert,
+  hideAlert,
 }
 
-export default connect(null, mapDispatchToProps)(PostForm)
+const mapStateToProps = (state) => {
+  return {
+    message: state.app.alert,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostForm)
