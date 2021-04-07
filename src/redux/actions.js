@@ -6,12 +6,17 @@ export const createPost = (post) => {
 
 export const fetchPost = () => {
   return async (dispatch) => {
-    dispatch({ type: SHOW_LOADER })
-    const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
+    try {
+      dispatch({ type: SHOW_LOADER })
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
 
-    const data = await response.json()
-    dispatch({ type: HIDE_LOADER })
-    dispatch({ type: FETCH_POSTS, payload: data })
+      const data = await response.json()
+      dispatch({ type: HIDE_LOADER })
+      dispatch({ type: FETCH_POSTS, payload: data })
+    } catch (error) {
+      dispatch(showAlert('Что-то пошло не так'))
+      dispatch({ type: HIDE_LOADER })
+    }
   }
 }
 
